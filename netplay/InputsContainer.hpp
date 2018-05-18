@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 #include "Logger.hpp"
 
 #include <vector>

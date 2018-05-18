@@ -1,4 +1,8 @@
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "Messages.hpp"
 #include "DllNetplayManager.hpp"
 #include "CharacterSelect.hpp"

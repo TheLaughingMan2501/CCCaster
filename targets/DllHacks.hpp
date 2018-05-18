@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 
 
 namespace DllHacks

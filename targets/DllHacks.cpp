@@ -1,5 +1,9 @@
 #include "DllHacks.hpp"
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "Exceptions.hpp"
 #include "ProcessManager.hpp"
 #include "Algorithms.hpp"
@@ -46,14 +50,23 @@ void initializePreLoad()
     for ( const Asm& hack : filterRepeatedSfx )
         WRITE_ASM_HACK ( hack );
 
+#ifdef STEAM_VER
+	//Todo:need for rollback
+#else
     for ( const Asm& hack : muteSpecificSfx )
         WRITE_ASM_HACK ( hack );
+#endif
+#ifdef STEAM_VER
+	for (const Asm& hack : detectAutoReplaySave)
+		WRITE_ASM_HACK(hack);
 
+	WRITE_ASM_HACK(disableTrainingMusicReset);
+#else
     WRITE_ASM_HACK ( detectAutoReplaySave );
     WRITE_ASM_HACK ( hijackEscapeKey );
     WRITE_ASM_HACK ( disableTrainingMusicReset );
     WRITE_ASM_HACK ( fixBossStageSuperFlashOverlay );
-
+#endif
     // TODO color hijack is temporary disabled due to some issues
     //
     // for ( const Asm& hack : hijackLoadingStateColors )
@@ -168,9 +181,11 @@ void initializePostLoad()
     LOG ( "threadId=%08x", GetCurrentThreadId() );
 
     // Apparently this needs to be applied AFTER the game loads
+#ifdef STEAM_VER
+#else
     for ( const Asm& hack : enableDisabledStages )
         WRITE_ASM_HACK ( hack );
-
+#endif
     // Get the handle to the main window
     if ( ! ( windowHandle = ProcessManager::findWindow ( CC_TITLE ) ) )
         LOG ( "Couldn't find window '%s'", CC_TITLE );

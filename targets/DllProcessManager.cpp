@@ -1,6 +1,10 @@
 #include "ProcessManager.hpp"
 #include "TcpSocket.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 #include "Exceptions.hpp"
 #include "ErrorStringsExt.hpp"
 

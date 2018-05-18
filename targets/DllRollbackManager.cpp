@@ -1,6 +1,10 @@
 #include "DllRollbackManager.hpp"
 #include "MemDump.hpp"
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "ErrorStringsExt.hpp"
 
 #include <utility>

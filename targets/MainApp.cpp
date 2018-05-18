@@ -4,7 +4,11 @@
 #include "ExternalIpAddress.hpp"
 #include "SmartSocket.hpp"
 #include "UdpSocket.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 #include "Exceptions.hpp"
 #include "Algorithms.hpp"
 #include "CharacterSelect.hpp"

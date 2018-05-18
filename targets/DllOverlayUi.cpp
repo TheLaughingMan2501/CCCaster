@@ -1,5 +1,9 @@
 #include "DllOverlayUi.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 
 #include <d3dx9.h>
 

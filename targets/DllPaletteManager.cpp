@@ -1,5 +1,9 @@
 #include "PaletteManager.hpp"
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "Logger.hpp"
 #include "CharacterSelect.hpp"
 #include "ProcessManager.hpp"

@@ -2,7 +2,11 @@
 
 #include "Timer.hpp"
 #include "Socket.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 
 #include <unordered_map>
 #include <list>

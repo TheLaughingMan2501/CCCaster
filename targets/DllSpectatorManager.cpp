@@ -3,7 +3,11 @@
 #include "ProcessManager.hpp"
 #include "Logger.hpp"
 #include "Algorithms.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 
 using namespace std;
 

@@ -1,5 +1,9 @@
 #include "DllNetplayManager.hpp"
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "ProcessManager.hpp"
 #include "Exceptions.hpp"
 #include "CharacterSelect.hpp"
@@ -57,20 +61,26 @@ uint16_t NetplayManager::getInitialInput ( uint8_t player )
 
 uint16_t NetplayManager::getAutoCharaSelectInput ( uint8_t player )
 {
-    *CC_P1_CHARA_SELECTOR_ADDR = ( uint32_t ) charaToSelector ( initial.chara[0] );
-    *CC_P2_CHARA_SELECTOR_ADDR = ( uint32_t ) charaToSelector ( initial.chara[1] );
+#ifdef STEAM_VER
+	// Prevent hitting Confirm until 150f after beginning of CharaSelect, this is to workaround CharaSelect freeze
+	if (getFrame() > 150) {
+#endif
+		*CC_P1_CHARA_SELECTOR_ADDR = (uint32_t)charaToSelector(initial.chara[0]);
+		*CC_P2_CHARA_SELECTOR_ADDR = (uint32_t)charaToSelector(initial.chara[1]);
 
-    *CC_P1_CHARACTER_ADDR = ( uint32_t ) initial.chara[0];
-    *CC_P2_CHARACTER_ADDR = ( uint32_t ) initial.chara[1];
+		*CC_P1_CHARACTER_ADDR = (uint32_t)initial.chara[0];
+		*CC_P2_CHARACTER_ADDR = (uint32_t)initial.chara[1];
 
-    *CC_P1_MOON_SELECTOR_ADDR = ( uint32_t ) initial.moon[0];
-    *CC_P2_MOON_SELECTOR_ADDR = ( uint32_t ) initial.moon[1];
+		*CC_P1_MOON_SELECTOR_ADDR = (uint32_t)initial.moon[0];
+		*CC_P2_MOON_SELECTOR_ADDR = (uint32_t)initial.moon[1];
 
-    *CC_P1_COLOR_SELECTOR_ADDR = ( uint32_t ) initial.color[0];
-    *CC_P2_COLOR_SELECTOR_ADDR = ( uint32_t ) initial.color[1];
+		*CC_P1_COLOR_SELECTOR_ADDR = (uint32_t)initial.color[0];
+		*CC_P2_COLOR_SELECTOR_ADDR = (uint32_t)initial.color[1];
 
-    *CC_STAGE_SELECTOR_ADDR = initial.stage;
-
+		*CC_STAGE_SELECTOR_ADDR = initial.stage;
+#ifdef STEAM_VER
+	}
+#endif
     RETURN_MASH_INPUT ( 0, CC_BUTTON_CONFIRM );
 }
 
@@ -561,7 +571,11 @@ void NetplayManager::setState ( NetplayState state )
         if ( state == NetplayState::RetryMenu )
         {
             // The actual retry menu is opened at position *CC_MENU_STATE_COUNTER_ADDR + 1
+#ifdef STEAM_VER
+			_retryMenuStateCounter = *CC_MENU_STATE_COUNTER_ADDR - 1;
+#else
             _retryMenuStateCounter = *CC_MENU_STATE_COUNTER_ADDR + 1;
+#endif
         }
 
         // Exiting RetryMenu

@@ -2,10 +2,19 @@ VERSION = 3.0
 SUFFIX = a.020
 NAME = cccaster
 TAG =
+MBAA_TYPE =
+ifeq ($(MBAA_TYPE),-DSTEAM_VER)
+NAME = cccaster
+endif
+
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
 ifneq ($(TAG),)
 DOT_TAG = .$(TAG)
+endif
+
+ifneq ($(MBAA_TYPE),-DSTEAM_VER)
+MBAA_TYPE =
 endif
 
 # Main program files
@@ -23,6 +32,10 @@ MBAA_EXE = MBAA.exe
 README = README.md
 CHANGELOG = ChangeLog.txt
 RELAY_LIST = relay_list.txt
+GENERATOR_CPP = Generator.cpp
+ifeq ($(MBAA_TYPE),-DSTEAM_VER)
+GENERATOR_CPP = Generator_ST.cpp
+endif
 
 # Library sources
 GTEST_CC_SRCS = 3rdparty/gtest/fused-src/gtest/gtest-all.cc
@@ -78,7 +91,8 @@ DEFINES = -DWIN32_LEAN_AND_MEAN -DWINVER=0x501 -D_WIN32_WINNT=0x501 -D_M_IX86
 DEFINES += -DNAMED_PIPE='"\\\\.\\pipe\\cccaster_pipe"' -DPALETTES_FOLDER='"$(PALETTES_FOLDER)\\"' -DREADME='"$(README)"'
 DEFINES += -DMBAA_EXE='"$(MBAA_EXE)"' -DBINARY='"$(BINARY)"' -DFOLDER='"$(FOLDER)\\"' -DCHANGELOG='"$(CHANGELOG)"'
 DEFINES += -DHOOK_DLL='"$(FOLDER)\\$(DLL)"' -DLAUNCHER='"$(FOLDER)\\$(LAUNCHER)"' -DUPDATER='"$(UPDATER)"'
-DEFINES += -DRELAY_LIST='"$(RELAY_LIST)"'
+DEFINES += -DRELAY_LIST='"$(RELAY_LIST)"' $(MBAA_TYPE)
+
 INCLUDES = -I$(CURDIR) -I$(CURDIR)/netplay -I$(CURDIR)/lib -I$(CURDIR)/tests -I$(CURDIR)/3rdparty
 INCLUDES += -I$(CURDIR)/3rdparty/cereal/include -I$(CURDIR)/3rdparty/gtest/include -I$(CURDIR)/3rdparty/minhook/include
 INCLUDES += -I$(CURDIR)/3rdparty/d3dhook -I$(CURDIR)/3rdparty/framedisplay
@@ -160,7 +174,7 @@ $(FOLDER)/$(DLL): $(addprefix $(BUILD_PREFIX)/,$(DLL_OBJECTS)) res/rollback.o | 
 	@echo
 
 $(FOLDER)/$(LAUNCHER): tools/Launcher.cpp | $(FOLDER)
-	$(CXX) -o $@ $^ -m32 -s -Os -O2 -Wall -static -mwindows
+	$(CXX) -o $@ $^ -m32 -s -Os -O2 -Wall -static -mwindows $(MBAA_TYPE)
 	@echo
 	$(STRIP) $@
 	$(CHMOD_X)
@@ -214,7 +228,7 @@ tools/$(DEBUGGER): tools/Debugger.cpp $(DEBUGGER_LIB_OBJECTS)
 GENERATOR_LIB_OBJECTS = \
 	$(addprefix $(LOGGING_PREFIX)/,$(filter-out lib/Version.o lib/LoggerLogVersion.o lib/ConsoleUi.o,$(LIB_OBJECTS)))
 
-tools/$(GENERATOR): tools/Generator.cpp $(GENERATOR_LIB_OBJECTS)
+tools/$(GENERATOR): tools/$(GENERATOR_CPP) $(GENERATOR_LIB_OBJECTS)
 	$(CXX) -o $@ $(CC_FLAGS) $(LOGGING_FLAGS) -Wall -std=c++11 $^ $(LD_FLAGS)
 	@echo
 	$(STRIP) $@
@@ -267,7 +281,7 @@ define make_protocol
 endef
 
 define make_depend
-@scripts/make_depend "$(CXX)" "-m32 $(INCLUDES)"
+@scripts/make_depend "$(CXX)" "-m32 $(INCLUDES) $(MBAA_TYPE)"
 endef
 
 
@@ -344,7 +358,7 @@ format:
     --keep-one-line-blocks      	\
     --align-pointer=name        	\
     --align-reference=type      	\
-$(filter-out tools/Generator.cpp netplay/CharacterSelect.cpp lib/KeyboardVKeyNames.hpp targets/DllAsmHacks.hpp,\
+$(filter-out tools/Generator.cpp tools/Generator_ST.cpp netplay/CharacterSelect.cpp lib/KeyboardVKeyNames.hpp targets/DllAsmHacks.hpp targets/DllAsmHacks_ST.hpp,\
 $(NON_GEN_SRCS) $(NON_GEN_HEADERS))
 
 count:

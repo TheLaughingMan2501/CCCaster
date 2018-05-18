@@ -1,7 +1,11 @@
 #include "DllControllerManager.hpp"
 #include "DllOverlayUi.hpp"
 #include "DllHacks.hpp"
+#ifdef STEAM_VER
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "DllAsmHacks.hpp"
+#endif
 #include "KeyboardState.hpp"
 #include "CharacterSelect.hpp"
 

@@ -1,7 +1,11 @@
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 #include "Exceptions.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#else
 #include "Constants.hpp"
+#endif
 
 #include <distorm.h>
 #include <mnemonics.h>

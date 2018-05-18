@@ -1,8 +1,13 @@
 #include "DllFrameRate.hpp"
 #include "TimerManager.hpp"
+#ifdef STEAM_VER
+#include "Constants_ST.hpp"
+#include "DllAsmHacks_ST.hpp"
+#else
 #include "Constants.hpp"
-#include "ProcessManager.hpp"
 #include "DllAsmHacks.hpp"
+#endif
+#include "ProcessManager.hpp"
 
 #include <d3dx9.h>
 
@@ -26,9 +31,11 @@ void enable()
         return;
 
     // TODO find an alternative because this doesn't work on Wine
+#ifdef STEAM_VER
+#else
     WRITE_ASM_HACK ( AsmHacks::disableFpsLimit );
     WRITE_ASM_HACK ( AsmHacks::disableFpsCounter );
-
+#endif
     isEnabled = true;
 
     LOG ( "Enabling FPS control!" );

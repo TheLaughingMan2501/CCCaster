@@ -164,12 +164,15 @@ bool hook ( const string& exe_path, const string& dll_path, bool high_priority )
         return false;
 
     // ASM hack to skip the configuration window for MBAA
+	// For Steam, don't need to skip the configuration window
+#ifdef STEAM_VER
+#else
     static const char jmp1[] = { ( char ) 0xEB, ( char ) 0x0E };
     WriteProcessMemory ( pi.hProcess, ( void * ) 0x04A1D42, jmp1, sizeof ( jmp1 ), 0 );
 
     static const char jmp2[] = { ( char ) 0xEB };
     WriteProcessMemory ( pi.hProcess, ( void * ) 0x04A1D4A, jmp2, sizeof ( jmp2 ), 0 );
-
+#endif
     // Continue normal process action.
     WriteProcessMemory ( pi.hProcess, ( void * ) address, ( char * ) &orig_code, 2, 0 );
     FlushInstructionCache ( pi.hProcess, ( void * ) address, 2 );
