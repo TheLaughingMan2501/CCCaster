@@ -158,6 +158,9 @@ $(ARCHIVE): $(FOLDER)/unzip.exe $(FOLDER)/$(README) $(FOLDER)/$(CHANGELOG)
 	$(ZIP) $(ARCHIVE) $^
 	$(ZIP) $(ARCHIVE) -j scripts/Add_Handler_Protocol.bat
 	$(ZIP) $(ARCHIVE) -j $(RELAY_LIST)
+ifeq ($(MBAA_TYPE),-DSTEAM_VER)
+	$(ZIP) $(ARCHIVE) -j tools/MBAA_Patch.EXE
+endif
 	cp -r res/GRP GRP
 	$(ZIP) $(ARCHIVE) -r GRP
 	rm -rf GRP
