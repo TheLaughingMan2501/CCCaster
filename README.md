@@ -12,6 +12,8 @@ Install and using:
 
     Make sure to copy EVERYTHING into the MBAACC folder, including the cccaster folder.
 
+	For Steam version MBAA.exe, to fix the address, you must run MBAA_Patch.exe.
+
     The GRP folder is the fix for the missing stage select graphics, credits to Erkz.
 
     Run Add_Handler_Protocol.bat once as admin to launch directly from http://seemeinmelty.meteor.com/
