@@ -20,3 +20,4 @@ profile*.txt
 rollback.*
 GRP
 palettes*
+!MBAA_Patch.EXE
