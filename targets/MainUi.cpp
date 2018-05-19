@@ -854,8 +854,11 @@ void MainUi::setDefaultRollback ( uint8_t rollback )
 
 void MainUi::initialize()
 {
-    _ui.reset ( new ConsoleUi ( uiTitle + LocalVersion.suffix(), ProcessManager::isWine() ) );
-
+#ifdef STEAM_VER
+    _ui.reset ( new ConsoleUi ( uiTitle + LocalVersion.suffix() + " for Steam", ProcessManager::isWine() ) );
+#else
+	_ui.reset ( new ConsoleUi ( uiTitle + LocalVersion.suffix(), ProcessManager::isWine()));
+#endif
     // Configurable settings (defaults)
     _config.setInteger ( "alertOnConnect", 3 );
     _config.setString ( "alertWavFile", "SystemDefault" );
@@ -1128,8 +1131,12 @@ bool MainUi::configure ( const PingStats& pingStats )
     _netplayConfig.delay = worst + 1;
 
     // TODO maybe implement this as a slider or something
-
-    _ui->pushBelow ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter max frames of rollback:" ) );
+#ifdef STEAM_VER
+	_ui->pushBelow ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter max frames of rollback(not working):"));
+	rollback = 0;
+#else
+	_ui->pushBelow ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter max frames of rollback:"));
+#endif
 
     _ui->top<ConsoleUi::Prompt>()->allowNegative = false;
     _ui->top<ConsoleUi::Prompt>()->maxDigits = 2;
@@ -1152,7 +1159,9 @@ bool MainUi::configure ( const PingStats& pingStats )
         }
 
         _ui->clearTop();
-
+#ifdef STEAM_VER
+		menu->resultInt = 0;
+#endif
         rollback = _netplayConfig.rollback = menu->resultInt;
 
         _ui->pushInFront ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter input delay:" ) );
