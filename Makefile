@@ -36,6 +36,11 @@ GENERATOR_CPP = Generator.cpp
 ifeq ($(MBAA_TYPE),-DSTEAM_VER)
 GENERATOR_CPP = Generator_ST.cpp
 endif
+ICON_RC = res/icon.rc
+ICON_ICO = $(wildcard res/icon*.ico)
+ifeq ($(MBAA_TYPE),-DSTEAM_VER)
+ICON_RC = res/icon_ST.rc
+endif
 
 # Library sources
 GTEST_CC_SRCS = 3rdparty/gtest/fused-src/gtest/gtest-all.cc
@@ -207,8 +212,8 @@ res/rollback.o: res/rollback.bin
 	objcopy -I binary -O elf32-i386 -B i386 $< $@
 	@echo
 
-res/icon.res: res/icon.rc res/icon.ico
-	$(WINDRES) -F pe-i386 res/icon.rc -O coff -o $@
+res/icon.res: $(ICON_RC) $(ICON_ICO)
+	$(WINDRES) -F pe-i386 $(ICON_RC) -O coff -o $@
 	@echo
 
 
