@@ -61,6 +61,7 @@ void initializePreLoad()
 		WRITE_ASM_HACK(hack);
 
 	WRITE_ASM_HACK(disableTrainingMusicReset);
+	WRITE_ASM_HACK(disableResetWinCounter);
 #else
     WRITE_ASM_HACK ( detectAutoReplaySave );
     WRITE_ASM_HACK ( hijackEscapeKey );
@@ -181,11 +182,9 @@ void initializePostLoad()
     LOG ( "threadId=%08x", GetCurrentThreadId() );
 
     // Apparently this needs to be applied AFTER the game loads
-#ifdef STEAM_VER
-#else
     for ( const Asm& hack : enableDisabledStages )
         WRITE_ASM_HACK ( hack );
-#endif
+
     // Get the handle to the main window
     if ( ! ( windowHandle = ProcessManager::findWindow ( CC_TITLE ) ) )
         LOG ( "Couldn't find window '%s'", CC_TITLE );

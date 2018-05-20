@@ -40,6 +40,8 @@
 
 #define INLINE_NOP_SEVEN_TIMES { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
 
+#define INLINE_NOP_TEN_TIMES { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+
 
 namespace AsmHacks
 {
@@ -120,35 +122,36 @@ static const AsmList hookMainLoop =
 };
 
 // Enable disabled stages and fix Ryougi stage music looping
+// The Steam version MBAA does not have Ryougi stage mugic.
 static const AsmList enableDisabledStages =
 {
     // Enable disabled stages
-    { ( void * ) 0x54CEBC, INLINE_DWORD_FF },
-    { ( void * ) 0x54CEC0, INLINE_DWORD_FF },
-    { ( void * ) 0x54CEC4, INLINE_DWORD_FF },
-    { ( void * ) 0x54CFA8, INLINE_DWORD_FF },
-    { ( void * ) 0x54CFAC, INLINE_DWORD_FF },
-    { ( void * ) 0x54CFB0, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF68, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF6C, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF70, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF74, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF78, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF7C, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF80, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF84, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF88, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF8C, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF90, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF94, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF98, INLINE_DWORD_FF },
-    { ( void * ) 0x54CF9C, INLINE_DWORD_FF },
-    { ( void * ) 0x54CFA0, INLINE_DWORD_FF },
-    { ( void * ) 0x54CFA4, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E00, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E04, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E08, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E30, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E34, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E38, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E3C, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E40, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E44, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E48, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E4C, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E50, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E54, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E58, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E5C, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E60, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E64, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E68, INLINE_DWORD_FF },
+    { ( void * ) 0x5B4E6C, INLINE_DWORD_FF },
+	{ ( void * ) 0x5B4E70, INLINE_DWORD_FF },
+	{ ( void * ) 0x5B4E74, INLINE_DWORD_FF },
+	{ ( void * ) 0x5B4E78, INLINE_DWORD_FF },
 
     // Fix Ryougi stage music looping
-    { ( void * ) 0x7695F6, { 0x35, 0x00, 0x00, 0x00 } },
-    { ( void * ) 0x7695EC, { 0xAA, 0xCC, 0x1E, 0x40 } },
+    //{ ( void * ) 0x7695F6, { 0x35, 0x00, 0x00, 0x00 } },
+    //{ ( void * ) 0x7695EC, { 0xAA, 0xCC, 0x1E, 0x40 } },
 };
 
 // Disable the FPS limit by setting the game's perceived perf freq to 1
@@ -156,6 +159,9 @@ static const Asm disableFpsLimit = { CC_PERF_FREQ_ADDR, { INLINE_DWORD ( 1 ), IN
 
 // Disable the code that updates the FPS counter
 static const Asm disableFpsCounter = { ( void * ) 0x41FD43, INLINE_NOP_THREE_TIMES };
+
+// Disable the Reset Win Counter when Character Select
+static const Asm disableResetWinCounter = { ( void * ) 0x46E47B, INLINE_NOP_TEN_TIMES };
 
 // Disable normal joystick and keyboard controls
 static const AsmList hijackControls =
