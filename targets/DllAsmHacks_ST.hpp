@@ -122,7 +122,6 @@ static const AsmList hookMainLoop =
 };
 
 // Enable disabled stages and fix Ryougi stage music looping
-// The Steam version MBAA does not have Ryougi stage mugic.
 static const AsmList enableDisabledStages =
 {
     // Enable disabled stages
@@ -150,8 +149,8 @@ static const AsmList enableDisabledStages =
 	{ ( void * ) 0x5B4E78, INLINE_DWORD_FF },
 
     // Fix Ryougi stage music looping
-    //{ ( void * ) 0x7695F6, { 0x35, 0x00, 0x00, 0x00 } },
-    //{ ( void * ) 0x7695EC, { 0xAA, 0xCC, 0x1E, 0x40 } },
+    { ( void * ) 0x7CFC86, { 0x35, 0x00, 0x00, 0x00 } },
+    { ( void * ) 0x7CFC7C, { 0xAA, 0xCC, 0x1E, 0x40 } },
 };
 
 // Disable the FPS limit by setting the game's perceived perf freq to 1

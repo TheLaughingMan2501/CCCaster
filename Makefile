@@ -160,6 +160,9 @@ $(ARCHIVE): $(FOLDER)/unzip.exe $(FOLDER)/$(README) $(FOLDER)/$(CHANGELOG)
 	$(ZIP) $(ARCHIVE) -j $(RELAY_LIST)
 ifeq ($(MBAA_TYPE),-DSTEAM_VER)
 	$(ZIP) $(ARCHIVE) -j tools/MBAA_Patch.EXE
+	cp -r res/BGM BGM
+	$(ZIP) $(ARCHIVE) -r BGM
+	rm -rf BGM
 endif
 	cp -r res/GRP GRP
 	$(ZIP) $(ARCHIVE) -r GRP
