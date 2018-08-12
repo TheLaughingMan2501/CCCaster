@@ -38,6 +38,8 @@
 
 #define INLINE_NOP_FOUR_TIMES { 0x90, 0x90, 0x90, 0x90 }
 
+#define INLINE_NOP_SIX_TIMES { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+
 #define INLINE_NOP_SEVEN_TIMES { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
 
 #define INLINE_NOP_TEN_TIMES { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
@@ -157,7 +159,7 @@ static const AsmList enableDisabledStages =
 static const Asm disableFpsLimit = { CC_PERF_FREQ_ADDR, { INLINE_DWORD ( 1 ), INLINE_DWORD ( 0 ) } };
 
 // Disable the code that updates the FPS counter
-static const Asm disableFpsCounter = { ( void * ) 0x41FD43, INLINE_NOP_THREE_TIMES };
+static const Asm disableFpsCounter = { ( void * ) 0x48B19C, INLINE_NOP_SIX_TIMES };
 
 // Disable the Reset Win Counter when Character Select
 static const Asm disableResetWinCounter = { ( void * ) 0x46E47B, INLINE_NOP_TEN_TIMES };

@@ -31,11 +31,9 @@ void enable()
         return;
 
     // TODO find an alternative because this doesn't work on Wine
-#ifdef STEAM_VER
-#else
     WRITE_ASM_HACK ( AsmHacks::disableFpsLimit );
     WRITE_ASM_HACK ( AsmHacks::disableFpsCounter );
-#endif
+
     isEnabled = true;
 
     LOG ( "Enabling FPS control!" );
