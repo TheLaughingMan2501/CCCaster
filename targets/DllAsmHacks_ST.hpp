@@ -348,7 +348,7 @@ static const AsmList filterRepeatedSfx =
 	{ ( void * ) 0x522BF2,{
 		0x80, 0x3C, 0x30, 0x01,                                     // cmp byte ptr [eax+esi],01
 		0x58,                                                       // pop eax
-		0x0F, 0x87, 0xE6, 0x02, 0x00, 0x00,                         // ja 0x521970 (SKIP_SFX)
+		0x0F, 0x87, 0x73, 0xED, 0xFF, 0xFF,                         // ja 0x521970 (SKIP_SFX)
 		0xEB, 0x38                                                  // jmp 0x522C37
 	} },
 	{ ( void * ) 0x522C37,{
@@ -376,41 +376,43 @@ static const AsmList filterRepeatedSfx =
 // Mutes the next playback of a specific sound effect
 static const AsmList muteSpecificSfx =
 {
-    { ( void * ) 0x40EEA1, {
+    { ( void * ) 0x466452, {
         0x8B, 0x14, 0x24,                                           // mov edx,[esp]
         0x81, 0xFA, INLINE_DWORD ( CC_SFX_ARRAY_LEN ),              // cmp edx,CC_SFX_ARRAY_LEN
-        0xE9, 0x22, 0x03, 0x00, 0x00                                // jmp 0x40F1D1
+        0xE9, 0x51, 0x04, 0x00, 0x00                                // jmp 0x4668B1
     } },
-    { ( void * ) 0x40F1D1, {
-        0x0F, 0x8D, 0xC1, 0x01, 0x00, 0x00,                         // jnl 0x40F398 (AFTER)
-        0xE9, 0xB6, 0x01, 0x00, 0x00                                // jmp 0x40F392
+    { ( void * ) 0x4668B1, {
+        0x0F, 0x8D, 0xFF, 0x02, 0x00, 0x00,                         // jnl 0x466BB6 (AFTER)
+        0xE9, 0x67, 0x01, 0x00, 0x00                                // jmp 0x466A23
     } },
-    { ( void * ) 0x40F392, {
-        0x0F, 0x85, 0xCA, 0x00, 0x00, 0x00,                         // jne 0x40F462
-                                                                    // AFTER:
-        0x8B, 0x50, 0x3C,                                           // mov edx,[eax+3C]
-        0x51,                                                       // push ecx
-        0x56,                                                       // push esi
-        0xEB, 0x3B                                                  // jmp 0x40F3D5
+	{ ( void * ) 0x466A23, {
+		0x0F, 0x85, 0xE9, 0x04, 0x00, 0x00,                         // jne 0x466F12
+		0xE9, 0x88, 0x01, 0x00, 0x00                                // jmp 0x466BB6 (AFTER)
+	} },
+	{ ( void * ) 0x466BB6, {                                        // AFTER:
+        0xFF, 0x77, 0x18,                                           // PUSH DWORD PTR DS:[EDI+18]
+        0x8B, 0x06,                                                 // MOV EAX,DWORD PTR DS:[ESI]
+        0x56,                                                       // PUSH ESI
+        0xE9, 0xD2, 0x00, 0x00, 0x00                                // jmp 0x466C92
     } },
-    { ( void * ) 0x40F462, {
+    { ( void * ) 0x466F12, {
         0x8D, 0x92, INLINE_DWORD ( sfxMuteArray ),                  // lea edx,[edx+sfxMuteArray]
-        0xE9, 0x78, 0x06, 0x00, 0x00                                // jmp 0x40FAE5
+        0xE9, 0x9B, 0x00, 0x00, 0x00                                // jmp 0x466FB2
     } },
-    { ( void * ) 0x40FAE5, {
+    { ( void * ) 0x466FB2, {
         0x80, 0x3A, 0x00,                                           // cmp byte ptr [edx],00
         0xC6, 0x02, 0x00,                                           // mov byte ptr [edx],00
-        0xEB, 0x14                                                  // jmp 0x40FB01
+        0xEB, 0x27                                                  // jmp 0x466FE1
     } },
-    { ( void * ) 0x40FB01, {
-        0x74, 0x05,                                                 // je 0x40FB03 (DONE_MUTE)
+    { ( void * ) 0x466FE1, {
+        0x74, 0x05,                                                 // je 0x466FE8 (DONE_MUTE)
         0xB9, INLINE_DWORD ( DX_MUTED_VOLUME ),                     // mov ecx,DX_MUTED_VOLUME
                                                                     // DONE_MUTE:
-        0xE9, 0x8B, 0xF8, 0xFF, 0xFF                                // jmp 0x40F398 (AFTER)
+        0xE9, 0xC9, 0xFB, 0xFF, 0xFF                                // jmp 0x466BB6 (AFTER)
     } },
     // Write this last due to dependencies
-    { ( void * ) 0x40F3D5, {
-        0xE9, 0xC7, 0xFA, 0xFF, 0xFF                                // jmp 0x40EEA1
+    { ( void * ) 0x466C92, {
+        0xE9, 0xBB, 0xF7, 0xFF, 0xFF, 0x90                          // jmp 0x466452
     } },
 };
 

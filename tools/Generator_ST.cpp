@@ -15,9 +15,9 @@ using namespace std;
 #define CC_EXTRA_STRUCT_SIZE        ( 0x20C )
 
 #define CC_P1_SPELL_CIRCLE_ADDR     ( ( float * )    0x5CB3C8 ) //( ( float * )    0x5641A4 )
-#define CC_P2_SPELL_CIRCLE_ADDR     ( ( float * )    0x5CB424 ) //( ( float * )    0x564200 )
+#define CC_P2_SPELL_CIRCLE_ADDR     ( ( float * )    0x5CB424 ) //( ( float * )    0x564200 ) óví≤ç∏
 
-#define CC_METER_ANIMATION_ADDR     ( ( uint32_t * ) 0x7D8C74 ) //( ( uint32_t * ) 0x7717D8 )
+#define CC_METER_ANIMATION_ADDR     ( ( uint32_t * ) 0x7D8C74 ) //( ( uint32_t * ) 0x7717D8 ) óví≤ç∏
 
 #define CC_EFFECTS_ARRAY_ADDR       ( ( char * )     0x6E28F0 ) //( ( char * )     0x67BDE8 )
 #define CC_EFFECTS_ARRAY_COUNT      ( 1000 )
@@ -33,8 +33,8 @@ using namespace std;
 #define CC_P2_STATUS_MSG_ARRAY_ADDR ( ( char * )     0x5CA824 ) //( ( char * )     0x5635F4 )
 #define CC_STATUS_MSG_ARRAY_SIZE    ( 0x60 )
 
-#define CC_CAMERA_SCALE_1_ADDR      ( ( float * )    0x5B3B90 ) //( ( float * )    0x54EB70 )// zoom
-#define CC_CAMERA_SCALE_2_ADDR      ( ( float * )    0x5B3B94 ) //( ( float * )    0x54EB74 )// zoom
+#define CC_CAMERA_SCALE_1_ADDR      ( ( float * )    0x5B3B94 ) //( ( float * )    0x54EB70 )// zoom
+#define CC_CAMERA_SCALE_2_ADDR      ( ( float * )    0x5B3B90 ) //( ( float * )    0x54EB74 )// zoom
 #define CC_CAMERA_SCALE_3_ADDR      ( ( float * )    0x5B3A28 ) //( ( float * )    0x54EB78 )
 
 #define CC_INPUT_STATE_ADDR         ( ( uint8_t * )  0x5C513F ) //( ( uint8_t * )  0x562A6F )// TODO figure out what the values mean
@@ -254,12 +254,11 @@ static const vector<MemDump> miscAddrs =
 
     // Camera position state
     ( uint32_t * ) 0x5BC35C,//( uint32_t * ) 0x555124,
-    ( uint32_t * ) 0x5BC360,//( uint32_t * ) 0x555128, (âˆÇµÇ¢)->å©íºÇµ
+    ( uint32_t * ) 0x5BC360,//( uint32_t * ) 0x555128,
     { 0x5BF834, 0x5BF840 }, //{ 0x5585E8, 0x5585F4 },
-	//( uint32_t * ) 0x5C9C84,  //{ 0x55DEC4, 0x55DED0 },å©íºÇµ
-	( uint32_t * ) 0x5C510C,
+    { 0x5C9C84, 0x5C9C8C }, //{ 0x55DEC4, 0x55DED0 }
     { 0x5C511C, 0x5C5120 }, //{ 0x55DEDC, 0x55DEE8 },
-    { 0x5C9C84, 0x5C9C90 }, //{ 0x564B14, 0x564B20 },(âˆÇµÇ¢)->å©íºÇµ
+    { 0x5CB63C, 0x5CB63F }, //{ 0x564B14, 0x564B20 },
 
     // More camera position state
     ( uint16_t * ) 0x5CB648, //( uint16_t * ) 0x564B10,

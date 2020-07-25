@@ -1131,12 +1131,7 @@ bool MainUi::configure ( const PingStats& pingStats )
     _netplayConfig.delay = worst + 1;
 
     // TODO maybe implement this as a slider or something
-#ifdef STEAM_VER
-	_ui->pushBelow ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter max frames of rollback(not working):"));
-	rollback = 0;
-#else
 	_ui->pushBelow ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter max frames of rollback:"));
-#endif
 
     _ui->top<ConsoleUi::Prompt>()->allowNegative = false;
     _ui->top<ConsoleUi::Prompt>()->maxDigits = 2;
@@ -1159,9 +1154,6 @@ bool MainUi::configure ( const PingStats& pingStats )
         }
 
         _ui->clearTop();
-#ifdef STEAM_VER
-		menu->resultInt = 0;
-#endif
         rollback = _netplayConfig.rollback = menu->resultInt;
 
         _ui->pushInFront ( new ConsoleUi::Prompt ( ConsoleUi::Prompt::Integer, "Enter input delay:" ) );
