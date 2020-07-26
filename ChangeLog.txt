@@ -3,6 +3,7 @@ v3.0a.022:
 - Added Replay mode to Offline Menu
 - Added match results to main menu
 - Fixed issue with PS4 stick button mappings
+- Added separately configurable P1/P2 input delay for offline
 
 v3.0a.020b (unofficial):
 - Fixed a bug that caused a crash on rollback (Steam version only)

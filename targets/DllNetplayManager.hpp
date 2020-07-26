@@ -104,6 +104,7 @@ public:
 
     // Get / set input delay frames
     uint8_t getDelay() const { return ( isInRollback() ? config.rollbackDelay : config.delay ); }
+    uint8_t getRollbackDelay() const { return config.rollbackDelay; }
     void setDelay ( uint8_t delay )
     {
         if ( isInRollback() )
@@ -111,7 +112,12 @@ public:
         else
             config.delay = delay;
     }
-
+    // Check if delay is split
+    bool isSplitDelay() const { return _splitDelay; }
+    void setRollbackDelay(uint8_t delay)
+    {
+        config.rollbackDelay = delay;
+    }
     // Get / set input rollback frames
     uint8_t getRollback() const { return config.rollback; }
     void setRollback ( uint8_t rollback ) { config.rollback = rollback; }
@@ -179,6 +185,9 @@ private:
 
     // The remote player, ie the one where setInputs gets called for each input message
     uint8_t _remotePlayer = 2;
+
+    // Separate delays for p1/p2
+    bool _splitDelay = true;
 
     // Get the input for the specific NetplayState
     uint16_t getPreInitialInput ( uint8_t player );

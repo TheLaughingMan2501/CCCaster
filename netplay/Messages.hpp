@@ -423,11 +423,11 @@ struct MenuIndex : public SerializableSequence
 
 struct ChangeConfig : public SerializableSequence
 {
-    ENUM_BOILERPLATE ( ChangeConfig, Delay, Rollback )
+    ENUM_BOILERPLATE ( ChangeConfig, Delay, Rollback, RollbackDelay)
 
     IndexedFrame indexedFrame = {{ 0, 0 }};
 
-    uint8_t delay = 0xFF, rollback = 0;
+    uint8_t delay = 0xFF, rollbackDelay = 0, rollback = 0;
 
     uint8_t getOffset() const
     {
@@ -439,7 +439,7 @@ struct ChangeConfig : public SerializableSequence
             return delay - rollback;
     }
 
-    PROTOCOL_MESSAGE_BOILERPLATE ( ChangeConfig, value, indexedFrame.value, delay, rollback )
+    PROTOCOL_MESSAGE_BOILERPLATE ( ChangeConfig, value, indexedFrame.value, delay, rollbackDelay, rollback )
 };
 
 
