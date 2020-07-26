@@ -153,11 +153,40 @@ bool DllRollbackManager::loadState ( IndexedFrame indexedFrame, NetplayManager& 
             netMan._indexedFrame = it->indexedFrame;
             it->load();
 
+            // Count the number of frames rolled back
+            int rbFrames = _statesList.back().indexedFrame.value - it->indexedFrame.value;
+            LOG("Rolled back %i frames", rbFrames);
+
             // Erase all other states after the current one.
             // Note: it.base() returns 1 after the position of it, but moving forward.
             for ( auto jt = it.base(); jt != _statesList.end(); ++jt )
             {
                 _freeStack.push ( jt->rawBytes - _memoryPool.get() );
+            }
+
+            // Erase one frame of inputs from the game's replay structs for each frame rolled back.
+            // TODO: save RepInputContainer's total frame count with each frame CCCaster indexes and roll back replay structs based on that instead of CCCaster's count 
+            for (; rbFrames > 0; rbFrames--) {
+                if (!*(RepRound**)CC_REPROUND_TBL_ENDPTR_ADDR) break;
+                RepRound* curRound = (*(RepRound**)CC_REPROUND_TBL_ENDPTR_ADDR - 1);
+                if (!curRound->inputs) break;
+                // Assumes there are always containers for 4 players in input container table; may not be true
+                for (int i = 0; i < 4; i++) {
+                    RepInputContainer* inputs = &(curRound->inputs[i]);
+                    if (!inputs->states) continue;
+                    RepInputState* state = &(inputs->states[inputs->activeIndex]);
+                    if (!state->frameCount) continue;
+                    if (state->frameCount == 1) {
+                        memset(state, 0, sizeof(RepInputState));
+                        inputs->statesEnd -= sizeof(RepInputState);
+                        LOG("Replay state %i for p%i has frame count 1; decrementing index", inputs->activeIndex, i + 1);
+                        inputs->activeIndex--;
+                    }
+                    else {
+                        LOG("Replay state %i for p%i has frame count %i; decrementing count", inputs->activeIndex, i + 1, state->frameCount);
+                        state->frameCount--;
+                    }
+                }
             }
 
             _statesList.erase ( it.base(), _statesList.end() );

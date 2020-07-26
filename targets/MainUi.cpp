@@ -936,9 +936,9 @@ void MainUi::setDefaultRollback ( uint8_t rollback )
 void MainUi::initialize()
 {
 #ifdef STEAM_VER
-    _ui.reset ( new ConsoleUi ( uiTitle + LocalVersion.suffix() + " for Steam", ProcessManager::isWine() ) );
+    _ui.reset ( new ConsoleUi ( uiTitle + "." + LocalVersion.suffix() + " for Steam", ProcessManager::isWine() ) );
 #else
-    _ui.reset ( new ConsoleUi ( uiTitle + LocalVersion.suffix(), ProcessManager::isWine()));
+    _ui.reset ( new ConsoleUi ( uiTitle + "." + LocalVersion.suffix(), ProcessManager::isWine()));
 #endif
     // Configurable settings (defaults)
     _config.setInteger ( "alertOnConnect", 3 );

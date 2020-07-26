@@ -51,17 +51,17 @@ void initializePreLoad()
         WRITE_ASM_HACK ( hack );
 
 #ifdef STEAM_VER
-	//Todo:need for rollback
+    //Todo:need for rollback
 #else
     for ( const Asm& hack : muteSpecificSfx )
         WRITE_ASM_HACK ( hack );
 #endif
 #ifdef STEAM_VER
-	for (const Asm& hack : detectAutoReplaySave)
-		WRITE_ASM_HACK(hack);
+    for (const Asm& hack : detectAutoReplaySave)
+        WRITE_ASM_HACK(hack);
 
-	WRITE_ASM_HACK(disableTrainingMusicReset);
-	WRITE_ASM_HACK(disableResetWinCounter);
+    WRITE_ASM_HACK(disableTrainingMusicReset);
+    WRITE_ASM_HACK(disableResetWinCounter);
 #else
     WRITE_ASM_HACK ( detectAutoReplaySave );
     WRITE_ASM_HACK ( hijackEscapeKey );
@@ -216,7 +216,7 @@ void initializePostLoad()
     // We can't hook DirectX calls on Wine (yet?).
     if ( ProcessManager::isWine() )
     {
-        *CC_AUTO_REPLAY_SAVE_ADDR = 0;
+        //*CC_AUTO_REPLAY_SAVE_ADDR = 0;
         return;
     }
 
