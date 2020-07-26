@@ -751,8 +751,10 @@ struct MainApp
     {
         KeyboardManager::get().unhook();
 
-        if ( clientMode.isLocal() )
-            options.set ( Options::SessionId, 1, generateRandomId() );
+        if (clientMode.isLocal()) {
+            options.set(Options::SessionId, 1, generateRandomId());
+            netplayConfig.setNames("localP1", "localP2");
+        }
         else if ( clientMode.isSpectate() )
             options.set ( Options::SessionId, 1, spectateConfig.sessionId );
         else
